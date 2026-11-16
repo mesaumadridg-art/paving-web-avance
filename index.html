@@ -286,44 +286,47 @@
   </div>
 </section>
 
-<!-- ============ RADIOS DE GIRO ============ -->
+<!-- ============ RADIOS DE GIRO (simulación en canvas) ============ -->
 <section id="giro" class="dark topo" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="eyebrow">Radios de giro</div>
-      <h2>Un bus de doce metros<br>en una entrada real.</h2>
-      <p class="lead">Barrido de trayectoria sobre geometría real: envolvente de giro en planta y
-        seguimiento frontal. Los dos casos son el mismo acceso del aeropuerto, en sentidos opuestos.</p>
+      <h2>Doce metros de bus<br>caben o no caben.</h2>
+      <p class="lead">No es un video: es la geometría calculada. El eje trasero recorre un arco, el
+        delantero barre por fuera y el área ámbar es la huella real del vehículo. Mueva el radio y
+        observe cuánto espacio necesita de verdad.</p>
     </div>
 
-    <div class="giro rv">
-      <div class="giro-tabs">
-        <button class="giro-tab on" data-video="bus">Entrada TGU</button>
-        <button class="giro-tab" data-video="salida">Salida TGU</button>
-      </div>
-      <div class="visor giro-visor">
-        <video id="bus" src="assets/bus-entrada.mp4" poster="assets/bus-entrada.jpg"
-               preload="none" playsinline muted loop></video>
-        <div class="visor-hud"></div>
-        <div class="visor-tags">
-          <span class="on" id="busCaso">ENTRADA TGU · BUS15</span>
-          <span>Envolvente de giro</span>
-          <span>Vista en planta · 3D</span>
-        </div>
-        <div class="visor-bar">
-          <button class="visor-play" id="bplay" aria-label="Reproducir el barrido">
-            <svg id="bico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    <div class="sim rv">
+      <div class="sim-canvas">
+        <canvas id="busCanvas" aria-label="Simulación de la envolvente de giro de un bus de doce metros"></canvas>
+        <div class="sim-badge mono">PLANTA · BUS 12 m · AASHTO</div>
+        <div class="sim-ctrl">
+          <button id="simPlay" class="sim-btn" aria-label="Reproducir">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </button>
-          <div class="visor-track" id="btrack" role="slider" aria-label="Avance del barrido" tabindex="0">
-            <div class="visor-fill" id="bfill"></div>
-          </div>
-          <div class="visor-time mono" id="btiempo">00:00 / 00:30</div>
+          <input type="range" id="simT" min="0" max="1000" value="0" aria-label="Avance del recorrido">
+          <button id="simReset" class="sim-btn sim-reset" aria-label="Reiniciar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>
+          </button>
         </div>
       </div>
-      <div class="giro-datos">
-        <div><span class="k">Vehículo</span><b>Bus interurbano 12 m</b><small>Modelo de referencia Comil Campione 4.1</small></div>
-        <div><span class="k">Verificación</span><b>Envolvente y sobreancho</b><small>Comprueba que el vehículo no invade el carril opuesto</small></div>
-        <div><span class="k">Aplicación</span><b>Accesos y retornos</b><small>Intersecciones, rotondas y terminales</small></div>
+
+      <div class="sim-panel">
+        <div class="sim-lec"><span class="k">Radio eje trasero</span><b id="vR">9,0 m</b></div>
+        <div class="sim-lec"><span class="k">Radio exterior barrido</span><b id="vExt">—</b></div>
+        <div class="sim-lec"><span class="k">Ancho total barrido</span><b id="vAncho">—</b></div>
+        <div class="sim-lec"><span class="k">Sobreancho requerido</span><b id="vSobre">—</b></div>
+
+        <label class="sim-slider">
+          <span class="k">Radio de giro <b id="vR2">9,0 m</b></span>
+          <input type="range" id="simR" min="7" max="14" step="0.5" value="9">
+          <span class="sim-esc">cerrado ← → amplio</span>
+        </label>
+
+        <p class="sim-nota">La huella ámbar es la unión de todas las posiciones del vehículo.
+          El sobreancho es lo que hay que sumar al carril para que el bus no invada el carril opuesto.</p>
       </div>
     </div>
   </div>
@@ -610,5 +613,6 @@
 </footer>
 
 <script src="js/app.js"></script>
+<script src="js/giro.js"></script>
 </body>
 </html>

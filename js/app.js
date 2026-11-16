@@ -192,69 +192,6 @@ document.querySelector('.burger').addEventListener('click', () => {
   activar(0);
 })();
 
-/* ---------------------------------------------------- 6. radios de giro */
-(function () {
-  const video = document.getElementById('bus');
-  if (!video) return;
-  const tabs = [...document.querySelectorAll('.giro-tab')];
-  const play = document.getElementById('bplay'), fill = document.getElementById('bfill');
-  const track = document.getElementById('btrack'), tiempo = document.getElementById('btiempo');
-  const caso = document.getElementById('busCaso');
-  const ic = id => document.getElementById(id);
-
-  const ICO_PLAY = '<svg id="bico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-  const ICO_PAUSA = '<svg id="bico" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
-
-  function pintar() {
-    const t = video.currentTime || 0, d = video.duration || 0;
-    const mm = x => String(Math.floor(x / 60)).padStart(2, '0');
-    const ss = x => String(Math.floor(x % 60)).padStart(2, '0');
-    if (tiempo) tiempo.textContent = `${mm(t)}:${ss(t)} / ${mm(d)}:${ss(d)}`;
-    if (fill) fill.style.width = d ? (t / d * 100) + '%' : '0%';
-  }
-
-  tabs.forEach(tab => tab.addEventListener('click', () => {
-    const salida = tab.dataset.video === 'salida';
-    tabs.forEach(t => t.classList.toggle('on', t === tab));
-    video.src = salida ? 'assets/bus-salida.mp4' : 'assets/bus-entrada.mp4';
-    video.poster = salida ? 'assets/bus-salida.jpg' : 'assets/bus-entrada.jpg';
-    if (caso) caso.textContent = salida ? 'SALIDA TGU · BUS15' : 'ENTRADA TGU · BUS15';
-    video.load(); video.play().catch(() => {});
-    pintar();
-  }));
-
-  play.addEventListener('click', () => {
-    if (video.paused) video.play().catch(() => {});
-    else video.pause();
-  });
-  video.addEventListener('timeupdate', pintar);
-  video.addEventListener('loadedmetadata', pintar);
-  video.addEventListener('play', () => { if (ic('bico')) ic('bico').outerHTML = ICO_PAUSA.replace('<svg', '<svg id="bico"'); });
-  video.addEventListener('pause', () => { if (ic('bico')) ic('bico').outerHTML = ICO_PLAY.replace('<svg', '<svg id="bico"'); });
-
-  let drag = false;
-  const buscar = e => {
-    const r = track.getBoundingClientRect();
-    const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-    const p = Math.min(1, Math.max(0, x / r.width));
-    if (video.duration) video.currentTime = p * video.duration;
-    pintar();
-  };
-  track.addEventListener('pointerdown', e => { drag = true; buscar(e); });
-  window.addEventListener('pointermove', e => { if (drag) buscar(e); });
-  window.addEventListener('pointerup', () => { drag = false; });
-
-  const ioB = new IntersectionObserver(es => {
-    es.forEach(e => {
-      if (e.isIntersecting) {
-        video.preload = 'metadata';
-        video.play().catch(() => {});
-      } else if (!video.paused) video.pause();
-    });
-  }, { threshold: .35 });
-  ioB.observe(video);
-})();
-
 /* ---------------------------------------------------- 7. comparador de condición */
 (function () {
   const input = document.getElementById('comp');
