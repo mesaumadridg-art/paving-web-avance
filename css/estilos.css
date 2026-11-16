@@ -348,3 +348,76 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
   .rv{opacity:1;transform:none;transition:none}
   *{animation-duration:.01ms !important;transition-duration:.01ms !important}
 }
+/* ---------- huecos: lo que falta, dicho en su sitio ---------- */
+.hueco{
+  border:1px dashed rgba(16,28,44,.32);background:rgba(251,176,59,.05);
+  padding:20px 22px;display:flex;flex-direction:column;gap:5px;position:relative;
+  min-height:104px;justify-content:center;
+}
+.hueco .et{
+  font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--signal-deep);display:flex;align-items:center;gap:7px;margin-bottom:2px;
+}
+.hueco .et::before{content:'';width:6px;height:6px;border:1px solid currentColor;transform:rotate(45deg)}
+.hueco h4{font-family:var(--f-display);font-size:15.5px;font-weight:600;margin:0;letter-spacing:-.01em}
+.hueco p{font-size:12.5px;color:#6B767F;line-height:1.5;margin:0}
+.dark .hueco{border-color:rgba(255,255,255,.26);background:rgba(251,176,59,.06)}
+.dark .hueco h4{color:#fff}
+.dark .hueco p{color:#9FAAB6}
+.dark .hueco .et{color:var(--signal)}
+
+/* ---------- tablero de estado ---------- */
+.tablero{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.tab{
+  display:grid;grid-template-columns:24px 1fr auto;gap:14px;align-items:center;
+  padding:13px 16px;border:1px solid var(--line);background:#fff;
+  transition:border-color .25s,transform .25s;
+}
+
+.tab:hover{border-color:rgba(251,176,59,.7);transform:translateX(2px)}
+.tab.extra{background:#EDF1F4;border-style:dashed;margin-top:6px}
+.tab.extra b{color:#4E5A64}
+.tab .n{font-family:var(--f-mono);font-size:11px;color:#96A1AA}
+.tab b{font-size:14.5px;font-weight:600;display:block}
+.tab small{font-size:11.5px;color:#7A858E;display:block;margin-top:2px;line-height:1.35}
+.estado{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  padding:5px 8px;border:1px solid;white-space:nowrap;border-radius:1px;
+}
+.estado.ok{color:#0F5C37;border-color:#0F5C37;background:rgba(15,92,55,.09);font-weight:500}
+.estado.wip{color:#7A520A;border-color:#7A520A;background:rgba(251,176,59,.16);font-weight:500}
+.estado.wait{color:#5A646C;border-color:#5A646C;background:rgba(90,100,108,.08);font-weight:500}
+.estado::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:currentColor;margin-right:6px;vertical-align:1px}
+
+/* ---------- fichas de proyecto vacías ---------- */
+.proys{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+.proy{border:1px solid var(--line);background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.proy .ph{aspect-ratio:16/10;background:
+   repeating-linear-gradient(45deg,rgba(16,28,44,.045) 0 8px,transparent 8px 16px),
+   linear-gradient(180deg,#E8EDF1,#DDE4EA);
+   display:grid;place-items:center;color:#8B96A0;font-family:var(--f-mono);font-size:10px;
+   letter-spacing:.14em;text-transform:uppercase;border-bottom:1px dashed rgba(16,28,44,.24)}
+.proy .bd{padding:16px 18px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+.proy .bd h4{font-family:var(--f-display);font-size:16px;margin:0}
+.proy .bd p{font-size:12.5px;color:#6B767F;line-height:1.5;margin:0}
+.proy .faltan{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:10px}
+.proy .faltan span{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.08em;color:#6B4810;
+  border:1px dashed rgba(154,107,18,.6);background:rgba(251,176,59,.09);padding:4px 7px}
+.proy .ph{position:relative}
+.proy .badge{position:absolute;top:10px;left:10px;font-family:var(--f-mono);font-size:8.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--signal-deep);
+  padding:4px 8px}
+
+/* ---------- lista de lo que necesitamos ---------- */
+.pedido{display:grid;grid-template-columns:1fr 1fr;gap:0 30px;margin-top:10px}
+.pedido div{display:flex;gap:10px;align-items:flex-start;padding:9px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);font-size:13.5px;color:#C3CBD4}
+.pedido div i{font-style:normal;color:var(--signal);font-family:var(--f-mono);font-size:11px;padding-top:2px}
+.pedido div b{color:#fff;font-weight:500}
+
+@media (max-width:960px){
+  .tablero,.proys,.pedido{grid-template-columns:1fr}
+  .tab{grid-template-columns:20px 1fr;gap:10px}
+  .tab .estado{grid-column:2;justify-self:start;margin-top:6px}
+}
