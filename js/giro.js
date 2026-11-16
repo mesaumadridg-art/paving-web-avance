@@ -195,15 +195,15 @@
     ctx.lineJoin = 'round';
 
     // borde exterior de la calzada
-    ctx.strokeStyle = 'rgba(255,255,255,0.30)';
-    ctx.lineWidth = VIA * esc + 3;
+    ctx.strokeStyle = 'rgba(255,255,255,0.40)';
+        ctx.lineWidth = VIA * esc + 4;
     trazar(); ctx.stroke();
 
     // superficie asfáltica
     const grad = ctx.createLinearGradient(0, 0, W, H);
-    grad.addColorStop(0, '#4A5A6C');
-    grad.addColorStop(0.5, '#3F4D5D');
-    grad.addColorStop(1, '#34414F');
+    grad.addColorStop(0, '#56687D');
+    grad.addColorStop(0.5, '#455466');
+    grad.addColorStop(1, '#384454');
     ctx.strokeStyle = grad;
     ctx.lineWidth = VIA * esc;
     trazar(); ctx.stroke();
@@ -256,10 +256,10 @@
       i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
     });
     ctx.closePath();
-    ctx.fillStyle = 'rgba(251,176,59,0.055)';
-    ctx.fill();
-    ctx.fillStyle = obtenerPatron();
-    ctx.fill();
+    ctx.fillStyle = 'rgba(251,176,59,0.04)';
+        ctx.fill();
+        ctx.fillStyle = obtenerPatron();
+        ctx.fill();
     ctx.strokeStyle = 'rgba(251,176,59,0.72)';
     ctx.lineWidth = 1.5;
     ctx.stroke();
