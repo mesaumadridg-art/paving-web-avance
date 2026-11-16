@@ -201,9 +201,9 @@
 
     // superficie asfáltica
     const grad = ctx.createLinearGradient(0, 0, W, H);
-    grad.addColorStop(0, '#3E4C5C');
-    grad.addColorStop(0.5, '#36434F');
-    grad.addColorStop(1, '#2C3844');
+    grad.addColorStop(0, '#4A5A6C');
+    grad.addColorStop(0.5, '#3F4D5D');
+    grad.addColorStop(1, '#34414F');
     ctx.strokeStyle = grad;
     ctx.lineWidth = VIA * esc;
     trazar(); ctx.stroke();
@@ -447,7 +447,7 @@
     ctx.fillStyle = '#FBB03B';
     ctx.fillRect(x0 + L - 1.15 * s, -Wd / 2 + 0.03 * s, 0.22 * s, Wd - 0.06 * s);
 
-    // ---- sentido de marcha ----
+    // ---- morro: punta delantera, para distinguirlo de la luneta ----
     ctx.save();
     ctx.strokeStyle = 'rgba(20,32,45,0.62)';
     ctx.lineWidth = 2;
@@ -460,6 +460,12 @@
       ctx.lineTo(cx3 - 0.10 * s, Wd / 2 - 0.62 * s);
       ctx.stroke();
     }
+    ctx.restore();
+
+    // ---- defensa delantera ----
+    ctx.save();
+    ctx.fillStyle = 'rgba(16,28,44,0.28)';
+    ctx.fillRect(x0 + L - 1.12 * s, -Wd / 2 + 0.02 * s, 0.22 * s, Wd - 0.04 * s);
     ctx.restore();
 
     // ---- líneas de eje marcadas ----
@@ -498,10 +504,18 @@
     ctx.beginPath();
     ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 2); ctx.lineTo(x + largo, y + 2); ctx.lineTo(x + largo, y - 4);
     ctx.stroke();
+    // subdivisiones de 1 m
+    for (let i = 1; i < metros; i++) {
+      const xx = x + (largo * i) / metros;
+      ctx.beginPath(); ctx.moveTo(xx, y - 2); ctx.lineTo(xx, y + 2); ctx.stroke();
+    }
     ctx.font = '500 8.5px "JetBrains Mono", ui-monospace, monospace';
     ctx.fillStyle = 'rgba(255,255,255,0.55)';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(metros + ' m', x + largo + 8, y + 4);
+    ctx.textAlign = 'center';
+    ctx.fillText('0', x, y + 14);
+    ctx.fillText(metros + ' m', x + largo, y + 14);
+    ctx.textAlign = 'left';
     ctx.restore();
   }
 
@@ -511,7 +525,8 @@
     const items = [
       ['#FBB03B', 'HUELLA BARRIDA', false],
       ['#82CDFF', 'RADIO INTERIOR', true],
-      ['rgba(255,255,255,0.9)', 'MORRO', true]
+      ['rgba(255,255,255,0.9)', 'MORRO', true],
+      ['#F28C28', 'RADIO EXTERIOR', true]
     ];
     ctx.save();
     ctx.font = '500 8.5px "JetBrains Mono", ui-monospace, monospace';
