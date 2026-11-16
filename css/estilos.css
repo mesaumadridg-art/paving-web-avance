@@ -356,11 +356,11 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
 }
 .hueco .et{
   font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--signal-deep);display:flex;align-items:center;gap:7px;margin-bottom:2px;
+  color:#7A520A;font-weight:600;display:flex;align-items:center;gap:7px;margin-bottom:2px;
 }
 .hueco .et::before{content:'';width:6px;height:6px;border:1px solid currentColor;transform:rotate(45deg)}
 .hueco h4{font-family:var(--f-display);font-size:15.5px;font-weight:600;margin:0;letter-spacing:-.01em}
-.hueco p{font-size:13px;color:#4E5A64;line-height:1.5;margin:0}
+.hueco p{font-size:13px;color:#39454F;line-height:1.5;margin:0}
 .dark .hueco{border-color:rgba(255,255,255,.26);background:rgba(251,176,59,.06)}
 .dark .hueco h4{color:#fff}
 .dark .hueco p{color:#9FAAB6}
