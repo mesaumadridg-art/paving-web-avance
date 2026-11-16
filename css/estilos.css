@@ -244,7 +244,8 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
   transition:transform .18s,background .18s}
 .visor-play:hover{transform:scale(1.06);background:#FFBC52}
 .visor-play svg{width:15px;height:15px}
-.visor-track{flex:1;height:4px;background:rgba(255,255,255,.22);position:relative;pointer-events:auto;cursor:pointer}
+.visor-track{flex:1;height:5px;background:rgba(255,255,255,.24);position:relative;pointer-events:auto;cursor:pointer}
+.visor-track::before{content:'';position:absolute;left:0;right:0;top:-11px;bottom:-11px}
 .visor-fill{position:absolute;inset:0;right:auto;width:0%;background:var(--signal)}
 .visor-time{font-family:var(--f-mono);font-size:11px;color:#C9D2DB;letter-spacing:.05em;min-width:74px;text-align:right}
 .visor-cap{padding:16px 18px;background:#0E1319;border-top:1px solid rgba(255,255,255,.1);
@@ -336,6 +337,7 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
   .metricas .metrica:nth-child(n+3){border-top:1px solid var(--line)}
 }
 @media (max-width:560px){
+  .nav-in .btn{display:none}
   .hero-meta{gap:16px}
   .form .fila{grid-template-columns:1fr}
   .calc-out .sn{font-size:28px}
