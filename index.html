@@ -28,6 +28,8 @@
       <a href="#capacidades">Capacidades</a>
       <a href="#diseno">Diseño</a>
       <a href="#terreno">Territorio</a>
+      <a href="#giro">Giros</a>
+      <a href="#condicion">Condición</a>
       <a href="#proyectos">Proyectos</a>
       <a href="#estado">Estado</a>
       <a href="#contacto">Contacto</a>
@@ -243,34 +245,133 @@
   </div>
 </section>
 
-<!-- ============ PROCESO ============ -->
+<!-- ============ PROCESO (relato con scroll) ============ -->
 <section id="proceso" class="dark topo" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="eyebrow">Método</div>
       <h2>Del relieve natural<br>al trazado de precisión.</h2>
+      <p class="lead">Desplace y observe cómo un levantamiento aéreo se convierte en modelo digital y
+        termina en un trazado geométrico.</p>
     </div>
-    <div class="fases">
-      <article class="fase rv">
-        <div class="k">FASE 01</div>
-        <h3>Reconocimiento</h3>
-        <p>Vuelo fotogramétrico sobre el corredor para documentar la morfología existente antes de intervenir.</p>
-      </article>
-      <article class="fase rv">
-        <div class="k">FASE 02</div>
-        <h3>Modelo del terreno</h3>
-        <p>Curvas de nivel, pendientes y elevaciones que revelan quebradas, escorrentías y zonas críticas.</p>
-      </article>
-      <article class="fase rv">
-        <div class="k">FASE 03</div>
+  </div>
+
+  <div class="scrolly" id="scrolly">
+    <div class="scrolly-media">
+      <img src="assets/geo-ladera.webp" alt="Ladera natural" id="sc-img-0" class="on">
+      <img src="assets/mdt_poster.jpg" alt="Modelo digital del terreno" id="sc-img-1">
+      <img src="assets/pav-plataforma.webp" alt="Trazado y estructura" id="sc-img-2">
+      <div class="scrolly-tag" id="sc-tag">FASE 01 · RECONOCIMIENTO</div>
+    </div>
+    <div class="scrolly-pasos">
+      <div class="paso" data-i="0">
+        <span>FASE 01</span>
+        <h3>Reconocimiento aéreo</h3>
+        <p>Vuelo fotogramétrico sobre el corredor para documentar la morfología existente: pendientes,
+          quebradas y zonas de riesgo, antes de intervenir.</p>
+      </div>
+      <div class="paso" data-i="1">
+        <span>FASE 02</span>
+        <h3>Modelo digital del terreno</h3>
+        <p>Nube de puntos densificada, ortomosaico y curvas de nivel que revelan la escorrentía y los
+          puntos críticos de estabilidad.</p>
+      </div>
+      <div class="paso" data-i="2">
+        <span>FASE 03</span>
         <h3>Trazado y estructura</h3>
-        <p>Eje vial, radios de curvatura, drenaje y estructura de pavimento integrados al relieve real.</p>
-      </article>
+        <p>Eje vial, radios de curvatura, drenaje y estructura de pavimento integrados al relieve real,
+          con espesores verificados por cálculo.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ GALERÍA ============ -->
+<!-- ============ RADIOS DE GIRO ============ -->
+<section id="giro" class="dark topo" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">Radios de giro</div>
+      <h2>Un bus de doce metros<br>en una entrada real.</h2>
+      <p class="lead">Barrido de trayectoria sobre geometría real: envolvente de giro en planta y
+        seguimiento frontal. Los dos casos son el mismo acceso del aeropuerto, en sentidos opuestos.</p>
+    </div>
+
+    <div class="giro rv">
+      <div class="giro-tabs">
+        <button class="giro-tab on" data-video="bus">Entrada TGU</button>
+        <button class="giro-tab" data-video="salida">Salida TGU</button>
+      </div>
+      <div class="visor giro-visor">
+        <video id="bus" src="assets/bus-entrada.mp4" poster="assets/bus-entrada.jpg"
+               preload="none" playsinline muted loop></video>
+        <div class="visor-hud"></div>
+        <div class="visor-tags">
+          <span class="on" id="busCaso">ENTRADA TGU · BUS15</span>
+          <span>Envolvente de giro</span>
+          <span>Vista en planta · 3D</span>
+        </div>
+        <div class="visor-bar">
+          <button class="visor-play" id="bplay" aria-label="Reproducir el barrido">
+            <svg id="bico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <div class="visor-track" id="btrack" role="slider" aria-label="Avance del barrido" tabindex="0">
+            <div class="visor-fill" id="bfill"></div>
+          </div>
+          <div class="visor-time mono" id="btiempo">00:00 / 00:30</div>
+        </div>
+      </div>
+      <div class="giro-datos">
+        <div><span class="k">Vehículo</span><b>Bus interurbano 12 m</b><small>Modelo de referencia Comil Campione 4.1</small></div>
+        <div><span class="k">Verificación</span><b>Envolvente y sobreancho</b><small>Comprueba que el vehículo no invade el carril opuesto</small></div>
+        <div><span class="k">Aplicación</span><b>Accesos y retornos</b><small>Intersecciones, rotondas y terminales</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARADOR DE CONDICIÓN ============ -->
+<section id="condicion" class="topo-light" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">Condición del pavimento</div>
+      <h2>El deterioro<br>se clasifica antes de repararlo.</h2>
+      <p class="lead">Arrastre el control para comparar dos condiciones reales de pista. Cada una tiene
+        su causa, su severidad y su tratamiento: no se repara igual un caucho que un colapso de borde.</p>
+    </div>
+
+    <div class="comp rv">
+      <div class="comp-stage">
+        <img class="comp-img" src="assets/pci-a.webp" alt="Depósitos de caucho en pista">
+        <div class="comp-layer" id="compLayer">
+          <img class="comp-img" src="assets/geo-colapso.webp" alt="Colapso del borde de la vía">
+        </div>
+        <div class="comp-handle" id="compHandle"><span></span></div>
+        <input type="range" id="comp" min="0" max="100" value="48" aria-label="Comparar condiciones">
+        <div class="comp-lbl comp-lbl-a">Caucho</div>
+        <div class="comp-lbl comp-lbl-b">Colapso de borde</div>
+      </div>
+
+      <div class="comp-info">
+        <div class="comp-ficha on" data-lado="a">
+          <span class="k">Condición A</span>
+          <h3>Depósitos de caucho</h3>
+          <p>Acumulación de goma por aterrizaje en la zona de contacto. Reduce la fricción y afecta la
+            frenada; en pista de aterrizaje es un factor de seguridad, no de estética.</p>
+          <div class="tags"><span>Severidad baja</span><span>Tratamiento superficial</span><span>Afecta fricción</span></div>
+        </div>
+        <div class="comp-ficha" data-lado="b">
+          <span class="k">Condición B</span>
+          <h3>Colapso del borde</h3>
+          <p>Pérdida de confinamiento lateral por erosión del terraplén. Compromete la estructura
+            completa: no se corrige con una carpeta nueva, exige estabilizar el talud.</p>
+          <div class="tags"><span>Severidad alta</span><span>Riesgo estructural</span><span>Requiere geotecnia</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERÍA ============ --><!-- ============ GALERÍA ============ -->
 <section id="campo" class="topo-light" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head rv">
@@ -375,9 +476,9 @@
     <div class="sec-head rv">
       <div class="eyebrow">Estado del prototipo</div>
       <h2>Qué está hecho<br>y qué falta.</h2>
-      <p class="lead">El brief pide <b>siete herramientas interactivas</b>: dos ya funcionan en esta
-        página, tres están en diseño y dos esperan datos. La octava fila es el contenido institucional,
-        que no es una herramienta sino el material de la empresa.</p>
+      <p class="lead">El brief pide <b>siete herramientas interactivas</b>: cinco ya funcionan en esta
+        página y dos esperan datos que solo la empresa puede entregar. La octava fila es el contenido
+        institucional, que no es una herramienta sino el material de la empresa.</p>
     </div>
 
     <div class="tablero rv">
@@ -393,13 +494,13 @@
       </div>
       <div class="tab">
         <span class="n">03</span>
-        <div><b>Comparador de condición PCI / IRI</b><small>Control deslizante entre estado inicial y final, sobre fotos de deterioro propias.</small></div>
-        <span class="estado wip">En diseño</span>
+        <div><b>Comparador de condición PCI / IRI</b><small>Control deslizante entre dos condiciones reales de pista, con su diagnóstico y tratamiento.</small></div>
+        <span class="estado ok">Funcionando</span>
       </div>
       <div class="tab">
         <span class="n">04</span>
         <div><b>Simulador de radios de giro</b><small>Barrido del BUS15 en entrada y salida de TGU, con planta y seguimiento 3D.</small></div>
-        <span class="estado wip">En diseño</span>
+        <span class="estado ok">Funcionando</span>
       </div>
       <div class="tab">
         <span class="n">05</span>
@@ -409,7 +510,7 @@
       <div class="tab">
         <span class="n">06</span>
         <div><b>Animaciones de proceso</b><small>Relato al desplazar: relieve natural, modelo digital y trazado geométrico.</small></div>
-        <span class="estado wip">En diseño</span>
+        <span class="estado ok">Funcionando</span>
       </div>
       <div class="tab">
         <span class="n">07</span>

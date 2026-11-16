@@ -360,7 +360,7 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
 }
 .hueco .et::before{content:'';width:6px;height:6px;border:1px solid currentColor;transform:rotate(45deg)}
 .hueco h4{font-family:var(--f-display);font-size:15.5px;font-weight:600;margin:0;letter-spacing:-.01em}
-.hueco p{font-size:12.5px;color:#6B767F;line-height:1.5;margin:0}
+.hueco p{font-size:13px;color:#4E5A64;line-height:1.5;margin:0}
 .dark .hueco{border-color:rgba(255,255,255,.26);background:rgba(251,176,59,.06)}
 .dark .hueco h4{color:#fff}
 .dark .hueco p{color:#9FAAB6}
@@ -379,7 +379,7 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
 .tab.extra b{color:#4E5A64}
 .tab .n{font-family:var(--f-mono);font-size:11px;color:#96A1AA}
 .tab b{font-size:14.5px;font-weight:600;display:block}
-.tab small{font-size:11.5px;color:#7A858E;display:block;margin-top:2px;line-height:1.35}
+.tab small{font-size:12px;color:#556169;display:block;margin-top:3px;line-height:1.4}
 .estado{
   font-family:var(--f-mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
   padding:5px 8px;border:1px solid;white-space:nowrap;border-radius:1px;
@@ -400,7 +400,7 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
    letter-spacing:.14em;text-transform:uppercase;border-bottom:1px dashed rgba(16,28,44,.24)}
 .proy .bd{padding:16px 18px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
 .proy .bd h4{font-family:var(--f-display);font-size:16px;margin:0}
-.proy .bd p{font-size:12.5px;color:#6B767F;line-height:1.5;margin:0}
+.proy .bd p{font-size:12.8px;color:#4E5A64;line-height:1.5;margin:0}
 .proy .faltan{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:10px}
 .proy .faltan span{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.08em;color:#6B4810;
   border:1px dashed rgba(154,107,18,.6);background:rgba(251,176,59,.09);padding:4px 7px}
@@ -411,13 +411,101 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
 
 /* ---------- lista de lo que necesitamos ---------- */
 .pedido{display:grid;grid-template-columns:1fr 1fr;gap:0 30px;margin-top:10px}
-.pedido div{display:flex;gap:10px;align-items:flex-start;padding:9px 0;
-  border-bottom:1px solid rgba(255,255,255,.12);font-size:13.5px;color:#C3CBD4}
-.pedido div i{font-style:normal;color:var(--signal);font-family:var(--f-mono);font-size:11px;padding-top:2px}
-.pedido div b{color:#fff;font-weight:500}
+.pedido div{display:flex;gap:11px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid var(--line);font-size:14px;color:#2E3A45;line-height:1.5}
+.pedido div i{font-style:normal;color:var(--signal-deep);font-family:var(--f-mono);
+  font-size:11.5px;font-weight:700;padding-top:2px;flex:0 0 auto}
+.pedido div b{color:var(--night);font-weight:600}
+.dark .pedido div{color:#C3CBD4;border-bottom-color:rgba(255,255,255,.14)}
+.dark .pedido div i{color:var(--signal)}
+.dark .pedido div b{color:#fff}
 
 @media (max-width:960px){
   .tablero,.proys,.pedido{grid-template-columns:1fr}
   .tab{grid-template-columns:20px 1fr;gap:10px}
   .tab .estado{grid-column:2;justify-self:start;margin-top:6px}
+}
+
+/* ============================================================================
+   Relato con scroll · radios de giro · comparador de condición
+   ============================================================================ */
+
+/* ---------- scrollytelling del método ---------- */
+.scrolly{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);
+  align-items:start;max-width:var(--max);margin:clamp(20px,3vw,36px) auto 0;padding:0 var(--gut)}
+.scrolly-media{position:sticky;top:86px;aspect-ratio:4/3;overflow:hidden;
+  border:1px solid rgba(255,255,255,.16);background:#0A0F16}
+.scrolly-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transform:scale(1.05);transition:opacity .8s ease,transform 1.4s ease}
+.scrolly-media img.on{opacity:1;transform:scale(1)}
+.scrolly-tag{position:absolute;left:0;bottom:0;padding:10px 15px;background:rgba(10,15,22,.74);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--signal);z-index:2}
+.scrolly-pasos{display:flex;flex-direction:column}
+.paso{padding:clamp(34px,7vw,74px) 0;border-top:1px solid rgba(255,255,255,.14);
+  opacity:.38;transition:opacity .55s ease}
+.paso:first-child{border-top:0;padding-top:0}
+.paso.on{opacity:1}
+.paso span{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;color:var(--signal)}
+.paso h3{margin:9px 0 10px;font-size:clamp(20px,2.3vw,27px);color:#fff}
+.paso p{font-size:14.5px;color:#B6C0CA;line-height:1.62;max-width:44ch}
+
+/* ---------- radios de giro ---------- */
+.giro{margin-top:6px}
+.giro-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.giro-tab{font-family:var(--f-mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  padding:10px 18px;border:1px solid rgba(255,255,255,.26);color:#C3CBD4;
+  transition:background .25s,color .25s,border-color .25s}
+.giro-tab:hover{border-color:rgba(251,176,59,.65);color:#fff}
+.giro-tab.on{background:var(--signal);color:#1A1305;border-color:var(--signal);font-weight:600}
+.giro-datos{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(255,255,255,.14);margin-top:1px}
+.giro-datos > div{background:#152233;padding:17px 19px}
+.giro-datos .k{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--signal);display:block;margin-bottom:7px}
+.giro-datos b{display:block;color:#fff;font-size:14px;margin-bottom:4px;font-weight:600}
+.giro-datos small{color:#A3AEBA;font-size:11.5px;line-height:1.45;display:block}
+
+/* ---------- comparador de condición ---------- */
+.comp{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(20px,3vw,38px);
+  align-items:stretch;margin-top:6px}
+.comp-stage{position:relative;aspect-ratio:4/3;overflow:hidden;
+  border:1px solid var(--line);background:#DDE4EA;user-select:none}
+.comp-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.comp-layer{position:absolute;inset:0;clip-path:inset(0 0 0 48%);will-change:clip-path}
+.comp-handle{position:absolute;top:0;bottom:0;left:48%;width:2px;background:#fff;
+  pointer-events:none;box-shadow:0 0 14px rgba(0,0,0,.45);z-index:3}
+.comp-handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 3px 14px rgba(0,0,0,.35)}
+.comp-handle span::before,.comp-handle span::after{content:'';position:absolute;top:50%;
+  width:0;height:0;border:5px solid transparent;transform:translateY(-50%)}
+.comp-handle span::before{left:8px;border-right-color:var(--night)}
+.comp-handle span::after{right:8px;border-left-color:var(--night)}
+#comp{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;
+  margin:0;z-index:4;-webkit-appearance:none;appearance:none}
+#comp::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:100%}
+.comp-lbl{position:absolute;top:12px;z-index:2;font-family:var(--f-mono);font-size:9.5px;
+  letter-spacing:.14em;text-transform:uppercase;background:rgba(10,15,22,.72);color:#fff;
+  padding:5px 9px}
+.comp-lbl-a{left:12px}
+.comp-lbl-b{right:12px}
+.comp-info{position:relative}
+.comp-ficha{display:none;padding:clamp(20px,2.4vw,28px);border:1px solid var(--line);
+  background:#fff;height:100%}
+.comp-ficha.on{display:block;animation:aparece .45s ease}
+@keyframes aparece{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.comp-ficha .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--signal-deep)}
+.comp-ficha h3{margin:11px 0 11px;font-size:clamp(19px,2.1vw,23px)}
+.comp-ficha p{font-size:13.5px;color:#3F4B55;line-height:1.6}
+.comp-ficha .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.comp-ficha .tags span{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.09em;
+  text-transform:uppercase;border:1px solid rgba(16,28,44,.24);padding:5px 8px;color:#3F4B55}
+
+@media (max-width:960px){
+  .scrolly{grid-template-columns:1fr}
+  .scrolly-media{position:relative;top:0;aspect-ratio:16/10}
+  .paso{opacity:1;padding:22px 0}
+  .giro-datos{grid-template-columns:1fr}
+  .comp{grid-template-columns:1fr}
+  .comp-stage{aspect-ratio:1/1}
 }
