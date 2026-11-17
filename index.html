@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+<div id="prog" aria-hidden="true"></div>
 
 <div class="banda">
   <span>Prototipo de avance</span>·<b>datos y cifras de demostración</b>·<span>no es el sitio definitivo</span>
@@ -46,12 +47,15 @@
   <div class="hero-media"><img src="assets/portada.webp" alt="Movimiento de tierras y banqueo en ladera" fetchpriority="high"></div>
   <div class="hero-in">
     <div class="hero-kicker">Ingeniería vial · geotecnia · movilidad</div>
-    <h1>Diseñar el terreno<br>antes de <em>tocarlo.</em></h1>
+    <h1><span class="l"><span>Diseñar el terreno</span></span><span class="l"><span>antes de <em>tocarlo.</em></span></span></h1>
     <p class="hero-sub">Evaluamos, diseñamos y gestionamos infraestructura vial con criterio técnico,
       modelación y datos: pavimentos, suelos, trazado y tránsito, medidos antes de mover la primera máquina.</p>
     <div class="hero-cta">
       <a class="btn" href="#capacidades">Ver capacidades</a>
       <a class="btn on-dark" href="#diseno">Probar el calculador</a>
+    </div>
+    <div class="scrollhint" aria-hidden="true">
+      <span>Desplazar</span><i></i>
     </div>
     <div class="hero-meta">
       <div>Base de operación<b>Tegucigalpa, Honduras</b></div>
@@ -171,37 +175,37 @@
     <div class="calc rv">
       <div class="calc-side">
         <label for="esal">Tránsito de diseño · ESALs</label>
-        <div class="calc-val"><span id="esalNum">5.0</span><small>millones de ejes de 8,2 t</small></div>
-        <input type="range" id="esal" min="0" max="100" value="45" step="1"
+        <div class="calc-val"><span id="esalNum">5,0</span><small>millones de ejes de 8,2 t</small></div>
+        <input type="range" id="esal" min="0" max="100" value="63" step="1"
                aria-label="Tránsito de diseño en millones de ESALs">
         <div class="calc-scale"><span>0,1 M</span><span>50 M</span></div>
 
         <div class="calc-out">
           <div class="lbl">Número estructural requerido</div>
-          <div class="sn">SN <span id="snNum">3,42</span></div>
+          <div class="sn">SN <span id="snNum">3,4</span></div>
           <p id="snTexto">Suelo de fundación con módulo resiliente de 103 MPa (15.000 psi) y
             90 % de confiabilidad.</p>
         </div>
       </div>
 
       <div class="calc-stage">
-        <div class="pav" id="pav">
-          <div class="capa hma" id="cHma" style="height:34px">
-            <b>Carpeta asfáltica</b><span class="em" id="eHma">2,0"</span>
+        <div class="pav3d">
+          <canvas id="pavCanvas" aria-label="Modelo tridimensional del paquete estructural de pavimento"></canvas>
+          <div class="pav3d-top">
+            <span class="pav3d-badge mono">SECCIÓN DEL PAQUETE · AASHTO 1993</span>
+            <button id="pavSep" class="pav3d-sep">Separar capas</button>
           </div>
-          <div class="capa base" id="cBase" style="height:52px">
-            <b>Base granular</b><span class="em" id="eBase">6,0"</span>
+          <div class="pav3d-foot">
+            <span class="mono" id="pavTot">—</span>
+            <span class="pav3d-hint mono">Arrastre para girar</span>
           </div>
-          <div class="capa subbase" id="cSub" style="height:44px">
-            <b>Sub-base</b><span class="em" id="eSub">6,0"</span>
-          </div>
-          <div class="capa suelo"><b>Suelo de fundación</b><span class="em">Mr 103 MPa</span></div>
         </div>
         <div class="calc-note">
           <i>i</i>
           <span>Modelo esquemático con la ecuación AASHTO 1993, a<sub>1</sub> 0,44 · a<sub>2</sub> 0,14 ·
-            a<sub>3</sub> 0,11, confiabilidad 90 %. <b>No sustituye un diseño:</b> el espesor real depende
-            del suelo, el drenaje, el clima y la normativa aplicable.</span>
+            a<sub>3</sub> 0,11, confiabilidad 90 %. Los espesores están a escala real.
+            <b>No sustituye un diseño:</b> el espesor definitivo depende del suelo, el drenaje, el clima
+            y la normativa aplicable.</span>
         </div>
       </div>
     </div>
@@ -619,5 +623,6 @@
 
 <script src="js/app.js"></script>
 <script src="js/giro2.js"></script>
+<script src="js/paquete.js"></script>
 </body>
 </html>
