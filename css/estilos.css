@@ -87,8 +87,10 @@ header.nav{
 .nav-in{max-width:var(--max);margin:0 auto;padding:0 var(--gut);
   height:66px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .marca{display:flex;align-items:center;gap:11px}
-.marca svg{width:30px;height:30px;flex:0 0 auto}
+.marca img,.logo-marca{display:block;height:26px;width:auto;max-width:none;
+  aspect-ratio:1668 / 350;object-fit:contain}
 .marca b{font-family:var(--f-display);font-size:17px;letter-spacing:.16em;font-weight:700}
+.foot .marca img{height:25px}
 .nav-links{display:flex;gap:26px;font-size:13.5px;color:var(--graphite)}
 .nav-links a{position:relative;padding:4px 0;transition:color .2s}
 .nav-links a:hover{color:var(--night)}
@@ -682,3 +684,7 @@ html{scrollbar-color:rgba(16,28,44,.3) transparent;scrollbar-width:thin}
   padding:4px 8px;margin-top:6px}
 .pf-nota{font-size:11.5px;line-height:1.5;color:#5C6873;margin:8px 0 0;max-width:26ch}
 @media (max-width:760px){.portafolio{grid-template-columns:1fr}}
+
+/* estado «entrega aparte» en el tablero */
+.estado.later{background:transparent;color:#4E5A64;border:1px dashed rgba(16,28,44,.32)}
+.dark .estado.later{color:#B9C3CC;border-color:rgba(255,255,255,.28)}
