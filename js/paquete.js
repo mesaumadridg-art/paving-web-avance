@@ -275,7 +275,19 @@
   }
 
   /* ---- render ------------------------------------------------------------ */
+  function sincronizar() {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const aw = Math.round(r.width * dpr), ah = Math.round(r.height * dpr);
+    if (aw === canvas.width && ah === canvas.height && W === r.width) return;
+    canvas.width = aw; canvas.height = ah;
+    W = r.width; H = r.height;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
   function dibujar() {
+    sincronizar();
     if (!W) return;
     ctx.clearRect(0, 0, W, H);
 
