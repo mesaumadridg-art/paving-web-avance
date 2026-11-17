@@ -30,7 +30,7 @@
   let t = 0;
   let jugando = false;
   let vista = 'planta';
-  let empalme = 2.2;         // chaflán de la esquina interior, en metros
+  let empalme = 6.5;         // chaflán de la esquina interior, en metros
   let W = 0, H = 0, esc = 1, cx = 0, cy = 0;
 
   const $ = id => document.getElementById(id);
@@ -75,26 +75,74 @@
      El empalme rellena la esquina interior: allí el margen extra es el 70 %
      de su valor, porque el chaflán es curvo y solo cubre el cuadrante.
      ---------------------------------------------------------------------- */
+  function dentroDeCalzada(x, y) {
+    // franja principal
+    if (Math.abs(y - R) <= CARRIL) return true;
+    // franja del acceso
+    if (Math.abs(x) <= CARRIL && y <= R - CARRIL) return true;
+    // chaflán de la esquina: área bajo la curva cuadrática
+    if (x >= CARRIL && x <= CARRIL + empalme && y <= R - CARRIL && y >= R - CARRIL - empalme) {
+      const t2 = (x - CARRIL) / empalme;
+      const yCurva = (R - CARRIL) - empalme * (1 - Math.sqrt(t2)) * (1 - Math.sqrt(t2));
+      if (y >= yCurva) return true;
+    }
+    return false;
+  }
+
+  /* profundidad de la invasión: cuánto falta para entrar en la calzada */
   function excesoDe(x, y) {
-    const d = Math.min(Math.abs(x), Math.abs(y - R));
-    let libre = d - CARRIL;
-    if (x > 0 && y < R) libre -= empalme * 0.7;
-    return Math.max(0, libre);
+    if (dentroDeCalzada(x, y)) return 0;
+    const d = Math.min(Math.abs(x), Math.abs(y - R)) - CARRIL;
+    // en la esquina, el chaflán reduce la falta
+    if (x > 0 && y < R && empalme > 0) {
+      const t2 = Math.max(0, Math.min(1, (x - CARRIL) / empalme));
+      const yCurva = (R - CARRIL) - empalme * (1 - Math.sqrt(t2)) * (1 - Math.sqrt(t2));
+      const falta = yCurva - y;
+      return Math.max(0, Math.min(d, falta));
+    }
+    return Math.max(0, d);
   }
 
   function evaluar() {
     const N = 160;
-    let peor = 0, punto = null, cuantas = 0;
+    let peor = 0, punto = null, cuantas = 0, total = 0;
+    let peorRueda = 0, ruedaMala = null;
     for (let i = 0; i <= N; i++) {
       const p = pose(i / N);
-      const esq = esquinas(p);
-      esq.forEach(e => {
+      esquinas(p).forEach(e => {
+        total++;
         const ex = excesoDe(e.x, e.y);
         if (ex > 0.02) cuantas++;
         if (ex > peor) { peor = ex; punto = e; }
       });
+      ruedas(p).forEach(r => {
+        const ex = excesoDe(r.x, r.y);
+        if (ex > peorRueda) { peorRueda = ex; ruedaMala = r; }
+      });
     }
-    return { exceso: peor, punto, fraccion: cuantas / ((N + 1) * 4) };
+    return {
+      exceso: Math.max(peor, peorRueda),
+      excesoCarroceria: peor,
+      excesoRuedas: peorRueda,
+      punto, rueda: ruedaMala,
+      fraccion: total ? cuantas / total : 0
+    };
+  }
+
+  function ruedas(p) {
+    const dx = Math.cos(p.phi), dy = Math.sin(p.phi);
+    const nx = -Math.sin(p.phi), ny = Math.cos(p.phi);
+    const fuera = BUS.ancho / 2 - 0.06;   // plano de la rueda
+    const pts = [];
+    [0, BUS.batalla].forEach(ex => {
+      [1, -1].forEach(sd => {
+        pts.push({
+          x: p.x + dx * ex + nx * fuera * sd,
+          y: p.y + dy * ex + ny * fuera * sd
+        });
+      });
+    });
+    return pts;
   }
 
   function esquinas(p) {
@@ -216,9 +264,9 @@
 
     // empalme de la esquina interior: rellena el chaflán
     if (empalme > 0.04) {
-      const p0 = px(VIA / 2, R - VIA / 2);
-      const p1 = px(VIA / 2, R - VIA / 2 - empalme);
-      const p2 = px(VIA / 2 + empalme, R - VIA / 2);
+      const p0 = px(CARRIL, R - CARRIL);
+      const p1 = px(CARRIL, R - CARRIL - empalme);
+      const p2 = px(CARRIL + empalme, R - CARRIL);
       ctx.beginPath();
       ctx.moveTo(p0[0], p0[1]);
       ctx.lineTo(p1[0], p1[1]);
@@ -226,8 +274,8 @@
       ctx.closePath();
       ctx.fillStyle = g;
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.40)';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.lineWidth = 1.6;
       ctx.stroke();
     }
 
@@ -483,6 +531,16 @@
         ctx.arc(q[0], q[1], 2.4, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(228,84,66,0.9)';
         ctx.fill();
+        n++;
+      });
+      ruedas(p).forEach(r => {
+        if (excesoDe(r.x, r.y) <= 0.02) return;
+        const q = px(r.x, r.y);
+        ctx.beginPath();
+        ctx.arc(q[0], q[1], 3.4, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(228,84,66,0.95)';
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
         n++;
       });
     }
@@ -770,9 +828,15 @@
       $('vVeredicto').textContent = cumple ? 'Cabe' : 'No cabe';
       $('vVeredicto').className = 'veredicto-val ' + (cumple ? 'ok' : 'no');
       if ($('vDetalle')) {
-        $('vDetalle').textContent = cumple
-          ? 'Sin invasión de la calzada en todo el giro.'
-          : 'Corta la esquina ' + fmt(ev.exceso, 2) + ' m fuera del borde.';
+        if (cumple) {
+          $('vDetalle').textContent = 'Ninguna rueda ni esquina sale del firme en todo el giro.';
+        } else if (ev.excesoRuedas > 0.04 && ev.excesoRuedas >= ev.excesoCarroceria) {
+          $('vDetalle').textContent = 'Las ruedas salen del firme ' + fmt(ev.excesoRuedas, 2) + ' m.';
+        } else if (ev.excesoCarroceria > 0.04) {
+          $('vDetalle').textContent = 'La carrocería barre ' + fmt(ev.excesoCarroceria, 2) + ' m fuera del borde.';
+        } else {
+          $('vDetalle').textContent = 'Se sale ' + fmt(ev.exceso, 2) + ' m de la calzada.';
+        }
       }
     }
     if ($('vEmp')) $('vEmp').textContent = fmt(empalme, 1) + ' m';

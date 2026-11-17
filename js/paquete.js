@@ -219,8 +219,8 @@
     ctx.lineTo(o[0] + u[0] * anchoTex + v[0] * altoTex, o[1] + u[1] * anchoTex + v[1] * altoTex);
     ctx.lineTo(o[0] + v[0] * altoTex, o[1] + v[1] * altoTex);
     ctx.closePath();
-    ctx.strokeStyle = 'rgba(255,255,255,0.16)';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(8,14,22,0.55)';
+    ctx.lineWidth = 1.4;
     ctx.stroke();
   }
 
@@ -302,18 +302,19 @@
     for (let y = 0; y < H; y += paso) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
     ctx.stroke();
 
-    // escala: alto total disponible
-    const altoTotalM = (esp.hma + esp.base + esp.sub) * PULG + separacion * AIRE * 2 + 0.55;
-    const anchoM = ANCHO + PROF;
-    esc = Math.min(
-      (W * 0.62) / anchoM,
-      (H * 0.62) / altoTotalM
-    );
-    ox = W * 0.44;
-    oy = H * 0.30 + (esp.hma + esp.base + esp.sub) * PULG * esc;
+    // reparto: prisma a la izquierda, columna de cotas a la derecha
+    const panelW = Math.min(238, Math.max(150, W * 0.34));
+    const areaW = W - panelW - 6;
 
-    // sombra en el suelo
+    const altoTotalM = (esp.hma + esp.base + esp.sub) * PULG + separacion * AIRE * 2 + 0.45;
+    const anchoM = ANCHO + PROF;
+    esc = Math.min((areaW * 0.80) / anchoM, (H * 0.60) / altoTotalM);
+    ox = areaW * 0.47;
+    oy = H * 0.28 + (esp.hma + esp.base + esp.sub) * PULG * esc;
+
     const a = vx(), b = vy();
+
+    // sombra
     const oS = proyectar(0, 0, 0);
     ctx.save();
     ctx.beginPath();
@@ -328,82 +329,137 @@
     ctx.filter = 'none';
     ctx.restore();
 
-    // subrasante: bloque de suelo bajo el paquete
-    const zSuelo = -0.30;
-    prisma(zSuelo, 0.30, TEX.suelo, null, null);
+    // subrasante
+    prisma(-0.30, 0.30, TEX.suelo, null, null);
 
-    // capas del paquete, de abajo hacia arriba
-    let z = 0;
-    const lista = [];
+    // capas, de abajo hacia arriba
     const orden = [
-      { tipo: 'sub', tex: TEX.subbase, nombre: 'Sub-base', em: esp.sub },
-      { tipo: 'base', tex: TEX.base, nombre: 'Base granular', em: esp.base },
-      { tipo: 'hma', tex: TEX.asfalto, nombre: 'Carpeta asfáltica', em: esp.hma }
+      { tex: TEX.subbase, nombre: 'Sub-base', em: esp.sub },
+      { tex: TEX.base, nombre: 'Base granular', em: esp.base },
+      { tex: TEX.asfalto, nombre: 'Carpeta asfáltica', em: esp.hma }
     ];
-    const separaciones = [];
+    const lista = [];
+    let zAcc = 0;
     orden.forEach((c, i) => {
       const alto = Math.max(0.035, c.em * PULG);
-      separaciones.push(separacion * AIRE * i);
-      lista.push({ alto, tipo: c.tipo, tex: c.tex, nombre: c.nombre, em: c.em, z: 0 });
+      lista.push({ alto, tex: c.tex, nombre: c.nombre, em: c.em, z: zAcc + separacion * AIRE * i });
+      zAcc += alto;
     });
+    lista.forEach(c => prisma(c.z, c.alto, c.tex, null, null));
 
-    let zAcc = 0;
-    lista.forEach((c, i) => {
-      c.z = zAcc + separaciones[i];
-      zAcc += c.alto;
-    });
-
-    lista.forEach(c => {
-      prisma(c.z, c.alto, c.tex, c.nombre, c.em);
-    });
-
-    // cotas de las tres capas
-    let zc = 0;
-    const capasCota = lista.slice().reverse().map((c, i) => {
-      const zz = zc;
-      zc += c.alto;
-      return {
-        alto: c.alto,
-        z: zz,
-        etiqueta: c.nombre,
-        espesor: fmt(c.em) + '" · ' + fmt(c.em * 2.54, 1) + ' cm'
-      };
-    });
-    // posición real de cada capa para la cota
+    // ---- columna de cotas ----
+    const px0 = W - panelW + 4;
     ctx.save();
-    lista.forEach(c => {
-      const p = proyectar(ANCHO, PROF, c.z + c.alto / 2);
-      const x = p[0] + 44;
-      const y = p[1];
-      ctx.strokeStyle = 'rgba(16,28,44,0.28)';
-      ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(px0, 12, panelW - 12, H - 24, 4);
+    ctx.fillStyle = 'rgba(255,255,255,0.94)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(16,28,44,0.14)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.font = '600 8.5px "JetBrains Mono", ui-monospace, monospace';
+    ctx.fillStyle = '#7A858E';
+    ctx.textBaseline = 'top';
+    ctx.fillText('ESPESOR POR CAPA', px0 + 14, 24);
+
+    const filas = lista.slice().reverse();     // de arriba abajo
+    const top = 44;
+    const altoFila = Math.min(74, (H - top - 46) / filas.length);
+
+    filas.forEach((c, i) => {
+      const y = top + i * altoFila;
+      // muestra de textura
+      const tx = px0 + 14, ty = y + 8;
+      ctx.save();
       ctx.beginPath();
-      ctx.moveTo(p[0] + 6, y); ctx.lineTo(x - 5, y);
+      ctx.roundRect(tx, ty, 22, 22, 2);
+      ctx.clip();
+      const pat = ctx.createPattern(c.tex, 'repeat');
+      const m = new DOMMatrix();
+      m.a = 0.42; m.d = 0.42;
+      pat.setTransform(m);
+      ctx.fillStyle = pat;
+      ctx.fillRect(tx, ty, 22, 22);
+      ctx.restore();
+      ctx.beginPath();
+      ctx.roundRect(tx, ty, 22, 22, 2);
+      ctx.strokeStyle = 'rgba(16,28,44,0.25)';
+      ctx.lineWidth = 1;
       ctx.stroke();
-      ctx.beginPath(); ctx.arc(p[0] + 6, y, 2, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(16,28,44,0.4)'; ctx.fill();
+
+      // nombre
+      ctx.font = '600 10px "Public Sans", system-ui, sans-serif';
+      ctx.fillStyle = '#26333F';
+      const nombre = c.nombre.length > 17 ? c.nombre.slice(0, 16) + '…' : c.nombre;
+      ctx.fillText(nombre, tx + 32, y + 8);
+
+      // valores
+      ctx.font = '700 15px "JetBrains Mono", ui-monospace, monospace';
+      ctx.fillStyle = '#101C2C';
+      ctx.fillText(fmt(c.em) + '"', tx + 32, y + 24);
       ctx.font = '600 9.5px "JetBrains Mono", ui-monospace, monospace';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#41505E';
-      ctx.fillText(c.nombre, x, y - 5);
       ctx.fillStyle = '#8A5F0C';
-      ctx.font = '700 10.5px "JetBrains Mono", ui-monospace, monospace';
-      ctx.fillText(fmt(c.em) + '"  ' + fmt(c.em * 2.54, 1) + ' cm', x, y + 7);
+      ctx.fillText(fmt(c.em * 2.54, 1) + ' cm', tx + 32 + 46, y + 28);
+
+      // separador
+      if (i < filas.length - 1) {
+        ctx.beginPath();
+        ctx.moveTo(px0 + 12, y + altoFila - 6);
+        ctx.lineTo(px0 + panelW - 26, y + altoFila - 6);
+        ctx.strokeStyle = 'rgba(16,28,44,0.09)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // guía desde la capa hasta su fila
+      const centro = proyectar(ANCHO, PROF, c.z + c.alto / 2);
+      ctx.beginPath();
+      ctx.moveTo(centro[0] + 4, centro[1]);
+      ctx.lineTo(tx - 6, y + 19);
+      ctx.strokeStyle = 'rgba(16,28,44,0.20)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.arc(centro[0] + 2, centro[1], 2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(16,28,44,0.35)';
+      ctx.fill();
     });
+
+    // total
+    const tot = (esp.hma + esp.base + esp.sub) * 2.54;
+    const yTot = H - 38;
+    ctx.beginPath();
+    ctx.moveTo(px0 + 12, yTot - 12);
+    ctx.lineTo(px0 + panelW - 26, yTot - 12);
+    ctx.strokeStyle = 'rgba(16,28,44,0.16)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.font = '600 9px "JetBrains Mono", ui-monospace, monospace';
+    ctx.fillStyle = '#5C6873';
+    ctx.fillText('TOTAL', px0 + 14, yTot - 2);
+    ctx.font = '700 14px "JetBrains Mono", ui-monospace, monospace';
+    ctx.fillStyle = '#101C2C';
+    ctx.fillText(fmt(tot, 0) + ' cm', px0 + 62, yTot - 5);
+
     ctx.restore();
 
-    // etiqueta flotante del número estructural
-    ctx.save();
+    // etiqueta de superficie
     const pTop = proyectar(ANCHO / 2, PROF / 2, lista[2].z + lista[2].alto);
-    ctx.font = '600 9px "JetBrains Mono", ui-monospace, monospace';
+    ctx.save();
+    ctx.font = '600 8.5px "JetBrains Mono", ui-monospace, monospace';
     const txt = 'SUPERFICIE DE RODADURA';
     const w2 = ctx.measureText(txt).width;
     ctx.beginPath();
-    ctx.roundRect(pTop[0] - w2 / 2 - 7, pTop[1] - 30, w2 + 14, 18, 2);
-    ctx.fillStyle = 'rgba(16,28,44,0.82)'; ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(txt, pTop[0], pTop[1] - 21);
+    ctx.roundRect(pTop[0] - w2 / 2 - 6, pTop[1] - 26, w2 + 12, 16, 2);
+    ctx.fillStyle = 'rgba(16,28,44,0.86)';
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(txt, pTop[0], pTop[1] - 18);
     ctx.restore();
   }
 
