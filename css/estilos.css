@@ -520,7 +520,8 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
 .comp-handle span::before{left:8px;border-right-color:var(--night)}
 .comp-handle span::after{right:8px;border-left-color:var(--night)}
 #comp{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;
-  margin:0;z-index:4;-webkit-appearance:none;appearance:none}
+  margin:0;z-index:4;-webkit-appearance:none;appearance:none;pointer-events:none}
+.comp-stage{cursor:ew-resize;touch-action:pan-y}
 #comp::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:100%}
 .comp-lbl{position:absolute;top:12px;z-index:2;font-family:var(--f-mono);font-size:9.5px;
   letter-spacing:.14em;text-transform:uppercase;background:rgba(10,15,22,.72);color:#fff;
@@ -658,3 +659,26 @@ html{scrollbar-color:rgba(16,28,44,.3) transparent;scrollbar-width:thin}
 .sim-usos p{margin:0;font-size:12.5px;line-height:1.5;color:#A3AEBA}
 @media (max-width:960px){.sim-usos{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.sim-usos{grid-template-columns:1fr}}
+
+/* ---- portafolio descargable ---- */
+.portafolio{display:grid;grid-template-columns:1.55fr .75fr;gap:1px;background:var(--line);
+  border:1px solid var(--line);margin-top:6px}
+.portafolio > div{background:#fff;padding:clamp(24px,3vw,38px)}
+.portafolio h3{font-family:var(--f-display);font-size:clamp(21px,2.4vw,27px);font-weight:700;
+  letter-spacing:-.02em;margin:0 0 12px;color:var(--night)}
+.portafolio .pf-txt p{font-size:14px;line-height:1.65;color:#3F4B55;max-width:52ch;margin:0}
+.pf-lista{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:9px}
+.pf-lista li{font-size:13px;color:#39454F;padding-left:20px;position:relative}
+.pf-lista li::before{content:'';position:absolute;left:0;top:6px;width:7px;height:7px;
+  border:1.5px solid var(--signal-deep);transform:rotate(45deg)}
+.pf-dl{background:#F5F8FA;display:flex;flex-direction:column;align-items:flex-start;
+  justify-content:center;gap:5px}
+.pf-k{font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:#68737D}
+.pf-pdf{font-family:var(--f-display);font-size:34px;font-weight:700;letter-spacing:-.03em;
+  color:var(--night);line-height:1}
+.pf-estado{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:#4A3105;background:rgba(251,176,59,.16);border:1px solid rgba(251,176,59,.45);
+  padding:4px 8px;margin-top:6px}
+.pf-nota{font-size:11.5px;line-height:1.5;color:#5C6873;margin:8px 0 0;max-width:26ch}
+@media (max-width:760px){.portafolio{grid-template-columns:1fr}}

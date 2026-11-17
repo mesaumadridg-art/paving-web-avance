@@ -132,6 +132,29 @@ document.querySelector('.burger').addEventListener('click', () => {
     fichas.forEach(f => f.classList.toggle('on', f.dataset.lado === lado));
   }
   input.addEventListener('input', mover);
+
+  /* ---- arrastre directo: en el teléfono el pulgar del range es invisible y hay que
+     acertarle; aquí se toma cualquier punto de la imagen ---- */
+  const stage = document.querySelector('.comp-stage');
+  let arrastrando = false;
+
+  function fijar(clientX) {
+    const r = stage.getBoundingClientRect();
+    const v = Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100));
+    input.value = v;
+    mover();
+  }
+
+  stage.addEventListener('pointerdown', e => {
+    arrastrando = true;
+    if (stage.setPointerCapture) { try { stage.setPointerCapture(e.pointerId); } catch (_) {} }
+    fijar(e.clientX);
+    e.preventDefault();
+  });
+  stage.addEventListener('pointermove', e => { if (arrastrando) fijar(e.clientX); });
+  stage.addEventListener('pointerup', () => { arrastrando = false; });
+  stage.addEventListener('pointercancel', () => { arrastrando = false; });
+  stage.addEventListener('pointerleave', () => { arrastrando = false; });
   mover();
 })();
 
