@@ -292,15 +292,19 @@
     <div class="sec-head rv">
       <div class="eyebrow">Radios de giro</div>
       <h2>Doce metros de bus<br>caben o no caben.</h2>
-      <p class="lead">No es un video: es la geometría calculada. El eje trasero recorre un arco, el
-        delantero barre por fuera y el área ámbar es la huella real del vehículo. Mueva el radio y
-        observe cuánto espacio necesita de verdad.</p>
+      <p class="lead">No es un video: es la geometría calculada sobre una intersección real. El bus baja
+        por el acceso, gira y se incorpora a la vía principal; el área ámbar es la huella que barre. Cambie
+        de vista, mueva el radio y observe cuánto espacio necesita de verdad.</p>
     </div>
 
     <div class="sim rv">
       <div class="sim-canvas">
         <canvas id="busCanvas" aria-label="Simulación de la envolvente de giro de un bus de doce metros"></canvas>
-        <div class="sim-badge mono">PLANTA · BUS 12 m · AASHTO</div>
+        <div class="sim-badge mono">BUS 12 m · AASHTO</div>
+        <div class="sim-vistas">
+          <button class="sim-vista on" data-vista="planta">Planta</button>
+          <button class="sim-vista" data-vista="3d">3D frontal</button>
+        </div>
         <div class="sim-ctrl">
           <button id="simPlay" class="sim-btn" aria-label="Reproducir">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -314,14 +318,15 @@
       </div>
 
       <div class="sim-panel">
-        <div class="sim-lec"><span class="k">Radio eje trasero</span><b id="vR">9,0 m</b></div>
+        <div class="sim-lec"><span class="k">Radio eje trasero</span><b id="vR">15,0 m</b></div>
         <div class="sim-lec"><span class="k">Radio exterior barrido</span><b id="vExt">—</b></div>
+        <div class="sim-lec"><span class="k">Radio interior barrido</span><b id="vInt">—</b></div>
         <div class="sim-lec"><span class="k">Ancho total barrido</span><b id="vAncho">—</b></div>
         <div class="sim-lec"><span class="k">Sobreancho requerido</span><b id="vSobre">—</b></div>
 
         <label class="sim-slider">
-          <span class="k">Radio de giro <b id="vR2">9,0 m</b></span>
-          <input type="range" id="simR" min="7" max="14" step="0.5" value="9">
+          <span class="k">Radio de giro <b id="vR2">15,0 m</b></span>
+          <input type="range" id="simR" min="9" max="26" step="0.5" value="15">
           <span class="sim-esc">cerrado ← → amplio</span>
         </label>
 
@@ -613,6 +618,6 @@
 </footer>
 
 <script src="js/app.js"></script>
-<script src="js/giro.js"></script>
+<script src="js/giro2.js"></script>
 </body>
 </html>

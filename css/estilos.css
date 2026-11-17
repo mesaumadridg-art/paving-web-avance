@@ -456,6 +456,13 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
 .sim-canvas canvas{display:block;width:100%;height:100%}
 .sim-badge{position:absolute;top:13px;left:15px;font-family:var(--f-mono);font-size:9.5px;
   letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);pointer-events:none}
+.sim-vistas{position:absolute;top:9px;left:14px;display:flex;gap:6px;z-index:3}
+.sim-badge{top:44px}
+.sim-vista{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  padding:6px 12px;border:1px solid rgba(255,255,255,.26);color:#AEB9C4;
+  background:rgba(8,12,18,.55);transition:background .2s,color .2s,border-color .2s;border-radius:1px}
+.sim-vista:hover{border-color:rgba(251,176,59,.7);color:#fff}
+.sim-vista.on{background:var(--signal);border-color:var(--signal);color:#1A1305;font-weight:700}
 .sim-ctrl{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:12px;
   padding:26px 15px 13px;background:linear-gradient(180deg,transparent,rgba(8,12,18,.85) 46%)}
 .sim-btn{width:40px;height:40px;flex:0 0 auto;border:1px solid rgba(255,255,255,.3);
