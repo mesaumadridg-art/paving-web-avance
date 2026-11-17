@@ -296,9 +296,9 @@
     <div class="sec-head rv">
       <div class="eyebrow">Radios de giro</div>
       <h2>Doce metros de bus<br>caben o no caben.</h2>
-      <p class="lead">No es un video: es la geometría calculada sobre una intersección real. El bus baja
-        por el acceso, gira y se incorpora a la vía principal; el área ámbar es la huella que barre. Cambie
-        de vista, mueva el radio y observe cuánto espacio necesita de verdad.</p>
+      <p class="lead">Un bus de 12 m no gira como un automóvil: barre <b>4,6 m de ancho</b> y corta la
+        esquina. Esta es la comprobación que se hace antes de dibujar el bordillo, y el número que decide
+        cuánto hay que empalmar. Cierre el empalme y vea en rojo dónde el vehículo se sale.</p>
     </div>
 
     <div class="sim rv">
@@ -322,6 +322,11 @@
       </div>
 
       <div class="sim-panel">
+        <div class="sim-veredicto">
+          <span class="k">Verificación de la calzada</span>
+          <b id="vVeredicto" class="veredicto-val">—</b>
+          <small id="vDetalle">—</small>
+        </div>
         <div class="sim-lec"><span class="k">Radio eje trasero</span><b id="vR">15,0 m</b></div>
         <div class="sim-lec"><span class="k">Radio exterior barrido</span><b id="vExt">—</b></div>
         <div class="sim-lec"><span class="k">Radio interior barrido</span><b id="vInt">—</b></div>
@@ -334,8 +339,33 @@
           <span class="sim-esc">cerrado ← → amplio</span>
         </label>
 
-        <p class="sim-nota">La huella ámbar es la unión de todas las posiciones del vehículo.
-          El sobreancho es lo que hay que sumar al carril para que el bus no invada el carril opuesto.</p>
+        <label class="sim-slider">
+          <span class="k">Empalme de esquina <b id="vEmp">2,2 m</b></span>
+          <input type="range" id="simE" min="0" max="3" step="0.1" value="2.2">
+          <span class="sim-esc">esquina viva ← → chaflán</span>
+        </label>
+
+        <p class="sim-nota">Los puntos rojos marcan dónde el vehículo pisa fuera de la calzada.
+          Así se dimensiona el empalme: se sube hasta que el giro deja de cortar la esquina.</p>
+      </div>
+    </div>
+
+    <div class="sim-usos rv">
+      <div>
+        <span class="k">01 · Accesos</span>
+        <p>Comprobar que un bus o un camión de diseño entra y sale de un acceso sin invadir el carril opuesto.</p>
+      </div>
+      <div>
+        <span class="k">02 · Empalmes</span>
+        <p>Dimensionar el radio del bordillo en la esquina: el mínimo que permite el giro completo.</p>
+      </div>
+      <div>
+        <span class="k">03 · Isletas y mobiliario</span>
+        <p>Ubicar isletas, postes y señales fuera del área barrida, no dentro de ella.</p>
+      </div>
+      <div>
+        <span class="k">04 · Sobreancho en curva</span>
+        <p>Cuánto hay que ampliar el carril para que el vehículo no pise la línea de borde.</p>
       </div>
     </div>
   </div>

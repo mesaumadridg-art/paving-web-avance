@@ -30,6 +30,7 @@
   let t = 0;
   let jugando = false;
   let vista = 'planta';
+  let empalme = 2.2;         // chaflán de la esquina interior, en metros
   let W = 0, H = 0, esc = 1, cx = 0, cy = 0;
 
   const $ = id => document.getElementById(id);
@@ -68,6 +69,33 @@
   }
 
   const centroGiro = () => ({ x: R, y: 0 });
+
+  /* ---- evaluación de la calzada -----------------------------------------
+     Un punto está en la calzada si cae dentro de alguna de las dos franjas.
+     El empalme rellena la esquina interior: allí el margen extra es el 70 %
+     de su valor, porque el chaflán es curvo y solo cubre el cuadrante.
+     ---------------------------------------------------------------------- */
+  function excesoDe(x, y) {
+    const d = Math.min(Math.abs(x), Math.abs(y - R));
+    let libre = d - CARRIL;
+    if (x > 0 && y < R) libre -= empalme * 0.7;
+    return Math.max(0, libre);
+  }
+
+  function evaluar() {
+    const N = 160;
+    let peor = 0, punto = null, cuantas = 0;
+    for (let i = 0; i <= N; i++) {
+      const p = pose(i / N);
+      const esq = esquinas(p);
+      esq.forEach(e => {
+        const ex = excesoDe(e.x, e.y);
+        if (ex > 0.02) cuantas++;
+        if (ex > peor) { peor = ex; punto = e; }
+      });
+    }
+    return { exceso: peor, punto, fraccion: cuantas / ((N + 1) * 4) };
+  }
 
   function esquinas(p) {
     const dx = Math.cos(p.phi), dy = Math.sin(p.phi);
@@ -169,59 +197,70 @@
     g.addColorStop(1, '#384454');
 
     const banda = (x0, y0, x1, y1) => {
-      const [ax, ay] = px(x0, y0), [bx, by] = px(x1, y1);
+      const p0 = px(x0, y0), p1 = px(x1, y1);
       ctx.strokeStyle = 'rgba(255,255,255,0.40)';
       ctx.lineWidth = VIA * esc + 4;
-      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.stroke();
       ctx.strokeStyle = g;
       ctx.lineWidth = VIA * esc;
-      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.stroke();
     };
 
     ctx.save();
     ctx.lineJoin = 'round';
     ctx.lineCap = 'butt';
 
+    // vía principal y acceso hasta el borde norte de la principal
     banda(-VIA - 6, R, R + RECTA_OUT + 6, R);
-    banda(0, -RECTA_IN - 4, 0, R - CARRIL * 0.1);
+    banda(0, -RECTA_IN - 4, 0, R - VIA / 2);
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-    ctx.lineWidth = 1.4;
-    [-CARRIL, CARRIL].forEach(d => {
-      const [ax, ay] = px(-VIA - 6, R + d), [bx, by] = px(R + RECTA_OUT + 6, R + d);
-      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
-    });
-    [-CARRIL, CARRIL].forEach(d => {
-      const [ax, ay] = px(d, -RECTA_IN - 4), [bx, by] = px(d, R);
-      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
-    });
+    // empalme de la esquina interior: rellena el chaflán
+    if (empalme > 0.04) {
+      const p0 = px(VIA / 2, R - VIA / 2);
+      const p1 = px(VIA / 2, R - VIA / 2 - empalme);
+      const p2 = px(VIA / 2 + empalme, R - VIA / 2);
+      ctx.beginPath();
+      ctx.moveTo(p0[0], p0[1]);
+      ctx.lineTo(p1[0], p1[1]);
+      ctx.quadraticCurveTo(p0[0], p0[1], p2[0], p2[1]);
+      ctx.closePath();
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.40)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
 
+    // bordillos
+    ctx.strokeStyle = 'rgba(255,255,255,0.58)';
+    ctx.lineWidth = 1.5;
+    // borde sur de la principal
+    [[-VIA - 6, R + CARRIL], [R + RECTA_OUT + 6, R + CARRIL]].forEach(() => {});
+    let q0 = px(-VIA - 6, R + CARRIL), q1 = px(R + RECTA_OUT + 6, R + CARRIL);
+    ctx.beginPath(); ctx.moveTo(q0[0], q0[1]); ctx.lineTo(q1[0], q1[1]); ctx.stroke();
+    // borde norte de la principal, desde el acceso hacia el este
+    q0 = px(VIA / 2, R - CARRIL); q1 = px(R + RECTA_OUT + 6, R - CARRIL);
+    ctx.beginPath(); ctx.moveTo(q0[0], q0[1]); ctx.lineTo(q1[0], q1[1]); ctx.stroke();
+    // borde oeste del acceso
+    q0 = px(-CARRIL, -RECTA_IN - 4); q1 = px(-CARRIL, R + CARRIL);
+    ctx.beginPath(); ctx.moveTo(q0[0], q0[1]); ctx.lineTo(q1[0], q1[1]); ctx.stroke();
+    // borde este del acceso, hasta el empalme
+    q0 = px(CARRIL, -RECTA_IN - 4); q1 = px(CARRIL, R - CARRIL - empalme);
+    ctx.beginPath(); ctx.moveTo(q0[0], q0[1]); ctx.lineTo(q1[0], q1[1]); ctx.stroke();
+
+    // eje central discontinuo
     ctx.save();
     ctx.setLineDash([10, 12]);
-    ctx.strokeStyle = 'rgba(251,176,59,0.52)';
+    ctx.strokeStyle = 'rgba(251,176,59,0.50)';
     ctx.lineWidth = 1.5;
-    const [ax, ay] = px(-VIA - 6, R), [bx, by] = px(R + RECTA_OUT + 6, R);
-    ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
-    const [cx2, cy2] = px(0, -RECTA_IN - 4), [dx2, dy2] = px(0, R - CARRIL);
-    ctx.beginPath(); ctx.moveTo(cx2, cy2); ctx.lineTo(dx2, dy2); ctx.stroke();
+    q0 = px(-VIA - 6, R); q1 = px(R + RECTA_OUT + 6, R);
+    ctx.beginPath(); ctx.moveTo(q0[0], q0[1]); ctx.lineTo(q1[0], q1[1]); ctx.stroke();
+    q0 = px(0, -RECTA_IN - 4); q1 = px(0, R - CARRIL);
+    ctx.beginPath(); ctx.moveTo(q0[0], q0[1]); ctx.lineTo(q1[0], q1[1]); ctx.stroke();
     ctx.restore();
-
-    // isleta de la esquina interior
-    const rInt = medir().interior;
-    const [ix, iy] = px(0, R);
-    ctx.beginPath();
-    ctx.moveTo(ix, iy - rInt * esc);
-    ctx.arc(ix, iy, rInt * esc, -Math.PI / 2, Math.PI, true);
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(14,22,32,0.72)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
 
     ctx.restore();
   }
-
   function huellaPlanta(hasta) {
     if (hasta <= 0.001) return;
     const N = 90, max = Math.ceil(N * hasta);
@@ -430,6 +469,24 @@
     });
 
     ctx.restore();
+  }
+
+  function marcarConflictos() {
+    const N = 90, max = Math.ceil(N * Math.max(0.02, t));
+    let n = 0;
+    for (let i = 0; i <= max; i++) {
+      const p = pose(i / N);
+      esquinas(p).forEach(e => {
+        if (excesoDe(e.x, e.y) <= 0.02) return;
+        const q = px(e.x, e.y);
+        ctx.beginPath();
+        ctx.arc(q[0], q[1], 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(228,84,66,0.9)';
+        ctx.fill();
+        n++;
+      });
+    }
+    return n;
   }
 
   function leyendaPlanta() {
@@ -698,6 +755,7 @@
       fondoPlanta();
       calzada();
       huellaPlanta(t);
+      marcarConflictos();
       if (enArco(t)) cotasPlanta(p);
       dibujarBusPlanta(p);
       leyendaPlanta();
@@ -706,6 +764,18 @@
     }
 
     const m = medir();
+    const ev = evaluar();
+    if ($('vVeredicto')) {
+      const cumple = ev.exceso < 0.05;
+      $('vVeredicto').textContent = cumple ? 'Cabe' : 'No cabe';
+      $('vVeredicto').className = 'veredicto-val ' + (cumple ? 'ok' : 'no');
+      if ($('vDetalle')) {
+        $('vDetalle').textContent = cumple
+          ? 'Sin invasión de la calzada en todo el giro.'
+          : 'Corta la esquina ' + fmt(ev.exceso, 2) + ' m fuera del borde.';
+      }
+    }
+    if ($('vEmp')) $('vEmp').textContent = fmt(empalme, 1) + ' m';
     if ($('vR')) $('vR').textContent = fmt(R) + ' m';
     if ($('vExt')) $('vExt').textContent = fmt(m.exterior) + ' m';
     if ($('vInt')) $('vInt').textContent = fmt(m.interior) + ' m';
@@ -769,6 +839,9 @@
   });
   if ($('simR')) $('simR').addEventListener('input', e => {
     R = +e.target.value; encuadrar(); pintar();
+  });
+  if ($('simE')) $('simE').addEventListener('input', e => {
+    empalme = +e.target.value; pintar();
   });
   if ($('simReset')) $('simReset').addEventListener('click', () => {
     jugando = false; t = 0; arranque = 0;
