@@ -151,7 +151,32 @@ document.querySelector('.burger').addEventListener('click', () => {
   pintar();
 })();
 
-/* ---------------------------------------------------- 9. aparición escalonada */
+/* ---------------------------------------------------- 9. parallax de portada */
+(function () {
+  const hero = document.getElementById('inicio');
+  if (!hero) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const img = hero.querySelector('.hero-media img');
+  const cont = hero.querySelector('.hero-in');
+  if (!img) return;
+  let raf = 0;
+  function pintar() {
+    raf = 0;
+    const y = window.scrollY;
+    const alto = hero.offsetHeight || 1;
+    if (y > alto * 1.2) return;
+    const f = Math.min(1, y / alto);
+    img.style.transform = 'translate3d(0,' + (y * 0.26).toFixed(1) + 'px,0) scale(1.06)';
+    if (cont) {
+      cont.style.transform = 'translate3d(0,' + (y * 0.10).toFixed(1) + 'px,0)';
+      cont.style.opacity = (1 - f * 0.85).toFixed(3);
+    }
+  }
+  window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(pintar); }, { passive: true });
+  pintar();
+})();
+
+/* ---------------------------------------------------- 10. aparición escalonada */
 (function () {
   if (!('IntersectionObserver' in window)) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

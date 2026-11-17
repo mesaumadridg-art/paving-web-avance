@@ -616,6 +616,7 @@ html{scrollbar-color:rgba(16,28,44,.3) transparent;scrollbar-width:thin}
 
 /* el velo del titular se retira al terminar */
 .hero h1{will-change:transform}
+.hero-media img{will-change:transform;transform:scale(1.06)}
 
 /* escalonado de aparición */
 .rv{transition-delay:var(--d,0ms)}
