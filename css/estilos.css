@@ -117,7 +117,7 @@ header.nav{
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:min(92svh,860px);display:flex;align-items:flex-end;
   padding-bottom:clamp(40px,7vw,86px);overflow:hidden;background:var(--night);color:#fff}
-.hero-media{position:absolute;inset:0}
+.hero-media{position:absolute;inset:0;overflow:hidden}
 .hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 42%;
   opacity:.85;transform:scale(1.02)}
 .hero::after{content:'';position:absolute;inset:0;
@@ -126,15 +126,15 @@ header.nav{
     linear-gradient(180deg,rgba(16,28,44,.34) 0%,rgba(11,20,32,.55) 58%,rgba(11,20,32,.96) 100%)}
 .hero-in{position:relative;z-index:3;width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
 .hero-kicker{
-  font-family:var(--f-mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--signal);margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .hero-kicker::before{content:'';width:38px;height:1px;background:var(--signal);display:block}
-.hero h1{max-width:15ch;text-wrap:balance}
+.hero h1{max-width:20ch}
 .hero h1 em{font-style:normal;color:var(--signal)}
 .hero-sub{margin-top:22px;max-width:52ch;color:#E7ECF2;font-size:clamp(15px,1.4vw,17.5px);line-height:1.5}
 .hero-meta{margin-top:38px;display:flex;gap:clamp(20px,4vw,52px);flex-wrap:wrap;
   border-top:1px solid rgba(255,255,255,.26);padding-top:18px}
-.hero-meta div{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:#CDD6DF}
+.hero-meta div{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;color:#DAE2EA}
 .hero-meta b{display:block;color:#fff;font-size:13.5px;letter-spacing:.02em;margin-top:4px;font-weight:500}
 .hero-cta{margin-top:34px;display:flex;gap:12px;flex-wrap:wrap}
 
@@ -287,13 +287,14 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 /* ---------- indicadores ---------- */
 .metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
   border:1px solid var(--line);margin-top:10px}
-.metrica{background:var(--mineral);padding:clamp(20px,2.4vw,30px)}
+.metrica{background:var(--mineral);padding:clamp(20px,2.4vw,30px);
+  display:flex;flex-direction:column}
 .metrica .v{font-family:var(--f-mono);font-size:clamp(28px,3.6vw,42px);font-weight:700;
   letter-spacing:-.03em;color:var(--night);line-height:1}
-.metrica .v em{font-style:normal;color:var(--signal)}
+.metrica .v em{font-style:normal;color:#8A5F0C;margin-left:.14em}
 .metrica .t{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--signal-deep);margin-top:10px}
-.metrica .s{font-size:12px;color:#6B767F;margin-top:6px;line-height:1.4}
+  color:#7A520A;margin-top:10px;min-height:2.5em}
+.metrica .s{font-size:12px;color:#5A6570;margin-top:auto;padding-top:8px;line-height:1.4}
 
 /* ---------- contacto ---------- */
 .contacto{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,64px);align-items:start}
@@ -331,7 +332,9 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
   .pilares,.divid,.fases,.metricas{grid-template-columns:1fr}
   .divid{gap:14px}
   .calc{grid-template-columns:1fr}
-  .calc-side{border-right:0;border-bottom:1px solid var(--line)}
+  .calc{grid-template-columns:1fr}
+  .calc-side{border-right:0;border-bottom:1px solid var(--line);min-width:0}
+  .calc-stage{min-width:0}
   .contacto{grid-template-columns:1fr}
   .gal{grid-template-columns:repeat(2,1fr)}
   .g-a,.g-b,.g-c,.g-d,.g-e{grid-column:span 1;aspect-ratio:4/3}
@@ -351,6 +354,25 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
   *{animation-duration:.01ms !important;transition-duration:.01ms !important}
 }
 /* ---------- huecos: lo que falta, dicho en su sitio ---------- */
+/* ---------- acerca de PAVING ---------- */
+.acerca{margin-top:clamp(22px,3vw,34px);border-top:1px solid var(--line);
+  padding-top:clamp(18px,2.4vw,26px);
+  display:grid;grid-template-columns:minmax(130px,180px) 1fr;gap:clamp(16px,3vw,48px);
+  align-items:start}
+.acerca .et{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:#7A520A;padding-top:3px}
+.acerca .et::before{content:'';display:inline-block;width:14px;height:2px;background:var(--signal);
+  vertical-align:middle;margin-right:8px}
+.acerca p{font-size:clamp(14px,1.15vw,16px);line-height:1.66;color:#33414C;margin:0;max-width:64ch}
+
+/* ---------- nota tecnologica ---------- */
+.tecno{margin:clamp(24px,3vw,34px) 0 0;border-left:2px solid var(--signal);padding-left:clamp(14px,1.6vw,20px);
+  font-size:clamp(13px,1.05vw,15px);line-height:1.62;color:#465360;max-width:80ch}
+
+@media(max-width:640px){
+  .acerca{grid-template-columns:1fr;gap:10px}
+}
+
 .hueco{
   border:1px dashed rgba(16,28,44,.32);background:rgba(251,176,59,.05);
   padding:20px 22px;display:flex;flex-direction:column;gap:5px;position:relative;
@@ -587,6 +609,7 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
 .hero h1 .l > span{display:block;transform:translateY(112%);
   animation:subeTitular .95s cubic-bezier(.22,1,.36,1) .12s forwards}
 .hero h1 .l:nth-child(2) > span{animation-delay:.26s}
+.hero h1 .l:nth-child(3) > span{animation-delay:.38s}
 @keyframes subeTitular{to{transform:none}}
 
 /* indicador de scroll */
