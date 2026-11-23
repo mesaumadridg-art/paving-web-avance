@@ -88,7 +88,7 @@ header.nav{
   height:66px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .marca{display:flex;align-items:center;gap:11px}
 .marca img,.logo-marca{display:block;height:26px;width:auto;max-width:none;
-  aspect-ratio:1668 / 350;object-fit:contain}
+  aspect-ratio:1668 / 349;object-fit:contain}
 .marca b{font-family:var(--f-display);font-size:17px;letter-spacing:.16em;font-weight:700}
 .foot .marca img{height:25px}
 .nav-links{display:flex;gap:26px;font-size:13.5px;color:var(--graphite)}
