@@ -127,16 +127,16 @@ header.nav{
 .hero-in{position:relative;z-index:3;width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
 .hero-kicker{
   font-family:var(--f-mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--signal);margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  color:var(--signal);margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .hero-kicker::before{content:'';width:38px;height:1px;background:var(--signal);display:block}
 .hero h1{max-width:20ch}
 .hero h1 em{font-style:normal;color:var(--signal)}
-.hero-sub{margin-top:22px;max-width:52ch;color:#E7ECF2;font-size:clamp(15px,1.4vw,17.5px);line-height:1.5}
-.hero-meta{margin-top:38px;display:flex;gap:clamp(20px,4vw,52px);flex-wrap:wrap;
-  border-top:1px solid rgba(255,255,255,.26);padding-top:18px}
+.hero-sub{margin-top:18px;max-width:52ch;color:#E7ECF2;font-size:clamp(15px,1.4vw,17.5px);line-height:1.5}
+.hero-meta{margin-top:26px;display:flex;gap:clamp(18px,3.4vw,46px);flex-wrap:wrap;
+  border-top:1px solid rgba(255,255,255,.26);padding-top:15px}
 .hero-meta div{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;color:#DAE2EA}
 .hero-meta b{display:block;color:#fff;font-size:13.5px;letter-spacing:.02em;margin-top:4px;font-weight:500}
-.hero-cta{margin-top:34px;display:flex;gap:12px;flex-wrap:wrap}
+.hero-cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
 
 /* ---------- bloques de sección ---------- */
 section{padding:clamp(58px,8vw,110px) 0;position:relative}
@@ -354,6 +354,23 @@ footer{background:var(--asphalt);color:#8C99A5;padding:clamp(40px,5vw,64px) 0 28
   *{animation-duration:.01ms !important;transition-duration:.01ms !important}
 }
 /* ---------- huecos: lo que falta, dicho en su sitio ---------- */
+/* ---------- etiquetas de evaluacion ---------- */
+.comp-tags{margin-top:clamp(26px,3.4vw,40px);border-top:1px solid var(--line);
+  padding-top:clamp(18px,2.2vw,24px);display:grid;
+  grid-template-columns:minmax(110px,150px) 1fr;gap:clamp(14px,2.4vw,34px);align-items:start}
+.comp-tags .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:#7A520A;padding-top:6px}
+.comp-tags .tira{display:flex;flex-wrap:wrap;gap:7px}
+.comp-tags .tira span{font-family:var(--f-mono);font-size:11px;letter-spacing:.02em;color:#2A3641;
+  border:1px solid rgba(16,28,44,.18);padding:5px 10px;background:#fff;line-height:1.4}
+.comp-nota{grid-column:2;margin:16px 0 0;font-size:13.5px;line-height:1.62;color:#465360;max-width:76ch}
+.comp-nota b{color:#1D262D;font-weight:600}
+
+@media(max-width:640px){
+  .comp-tags{grid-template-columns:1fr;gap:12px}
+  .comp-nota{grid-column:1}
+}
+
 /* ---------- acerca de PAVING ---------- */
 .acerca{margin-top:clamp(22px,3vw,34px);border-top:1px solid var(--line);
   padding-top:clamp(18px,2.4vw,26px);
